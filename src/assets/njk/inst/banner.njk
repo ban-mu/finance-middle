@@ -1,0 +1,24 @@
+{# banner 海报：宽 750 高 350，顶部活动横幅 #}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 750px; height: 350px; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: linear-gradient(135deg, {{ primaryColor }} 0%, #FF8E53 100%); color: #fff; position: relative; overflow: hidden; }
+    .title { font-size: 56px; font-weight: 800; padding: 70px 50px 10px; letter-spacing: 2px; text-shadow: 0 4px 12px rgba(0,0,0,.2); }
+    .subtitle { font-size: 28px; padding: 0 50px; opacity: .92; }
+    .badge { position: absolute; right: 40px; top: 40px; background: rgba(255,255,255,.25); padding: 10px 20px; border-radius: 30px; font-size: 22px; backdrop-filter: blur(6px); }
+    .qr { position: absolute; right: 40px; bottom: 30px; width: 110px; height: 110px; background: #fff; padding: 6px; border-radius: 12px; }
+    .qr img { width: 100%; height: 100%; display: block; }
+    .ts { position: absolute; left: 50px; bottom: 28px; font-size: 20px; opacity: .85; }
+  </style>
+</head>
+<body>
+  <div class="badge">{{ badge or '官方活动' }}</div>
+  <div class="title">{{ title or '理财节 最高年化6.8%' }}</div>
+  <div class="subtitle">{{ subtitle or '稳健理财 严选资产' }}</div>
+  <div class="qr"><img src="{{ qrDataUrl }}" alt="qr"/></div>
+  <div class="ts">活动时间：{{ period or '2026.09.17 - 10.17' }} · {{ generatedAt }}</div>
+</body>
+</html>

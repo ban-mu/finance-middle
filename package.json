@@ -1,0 +1,28 @@
+{
+  "name": "finance-middle",
+  "version": "1.0.0",
+  "description": "理财 BFF 中间层：BFF 接口聚合 + Nunjucks + Puppeteer 海报生成 + WebSocket 直播弹幕",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "node --watch src/app.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "body-parser": "^1.20.2",
+    "colorthief": "^2.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.14",
+    "nunjucks": "^3.2.4",
+    "p-queue": "^6.6.2",
+    "puppeteer": "^23.4.0",
+    "qrcode": "^1.5.4",
+    "sharp": "^0.33.5",
+    "uuid": "^10.0.0",
+    "winston": "^3.14.2",
+    "winston-daily-rotate-file": "^5.0.0",
+    "ws": "^8.18.0"
+  }
+}

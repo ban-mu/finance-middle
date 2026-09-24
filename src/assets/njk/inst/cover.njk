@@ -1,0 +1,36 @@
+{# cover 海报：封面型，750x1000 #}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 750px; height: 1000px; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: linear-gradient(180deg, #2C3E50 0%, #4CA1AF 100%); color: #fff; position: relative; overflow: hidden; }
+    .cover-img { width: 100%; height: 520px; background: {{ primaryColor }}; display: flex; align-items: center; justify-content: center; font-size: 36px; color: rgba(255,255,255,.85); }
+    .body { padding: 50px; }
+    .title { font-size: 52px; font-weight: 800; margin-bottom: 20px; }
+    .desc { font-size: 26px; line-height: 1.6; opacity: .92; margin-bottom: 40px; }
+    .meta { display: flex; gap: 30px; margin-bottom: 30px; }
+    .meta-item { background: rgba(255,255,255,.12); padding: 18px 30px; border-radius: 12px; }
+    .meta-item .k { font-size: 20px; opacity: .8; }
+    .meta-item .v { font-size: 32px; font-weight: 700; margin-top: 6px; }
+    .qr { position: absolute; right: 50px; bottom: 50px; width: 130px; height: 130px; background: #fff; padding: 8px; border-radius: 14px; }
+    .qr img { width: 100%; height: 100%; }
+    .ts { position: absolute; left: 50px; bottom: 60px; font-size: 22px; opacity: .8; }
+  </style>
+</head>
+<body>
+  <div class="cover-img">{{ coverText or '理财精选' }}</div>
+  <div class="body">
+    <div class="title">{{ title or '稳健盈90天' }}</div>
+    <div class="desc">{{ desc or '严选优质底层资产，稳健理财之选' }}</div>
+    <div class="meta">
+      <div class="meta-item"><div class="k">年化</div><div class="v">{{ annualRate or '4.85%' }}</div></div>
+      <div class="meta-item"><div class="k">期限</div><div class="v">{{ period or '90天' }}</div></div>
+      <div class="meta-item"><div class="k">起投</div><div class="v">{{ minAmount or 1000 }}</div></div>
+    </div>
+  </div>
+  <div class="qr"><img src="{{ qrDataUrl }}" alt="qr"/></div>
+  <div class="ts">扫码查看详情 · {{ generatedAt }}</div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{# video 海报：短视频/课程封面，750x1000 #}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 750px; height: 1000px; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: #000; color: #fff; position: relative; overflow: hidden; }
+    .thumb { width: 100%; height: 560px; background: linear-gradient(135deg, {{ primaryColor }}, #2C3E50); display: flex; align-items: center; justify-content: center; position: relative; }
+    .play { width: 110px; height: 110px; background: rgba(255,255,255,.25); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .play::after { content: ''; border-left: 30px solid #fff; border-top: 18px solid transparent; border-bottom: 18px solid transparent; margin-left: 10px; }
+    .duration { position: absolute; right: 30px; bottom: 30px; background: rgba(0,0,0,.6); padding: 6px 14px; border-radius: 6px; font-size: 22px; }
+    .body { padding: 50px; }
+    .title { font-size: 42px; font-weight: 700; margin-bottom: 20px; line-height: 1.4; }
+    .meta { font-size: 24px; color: #aaa; }
+    .qr { position: absolute; right: 40px; bottom: 40px; width: 120px; height: 120px; background: #fff; padding: 6px; border-radius: 12px; }
+    .qr img { width: 100%; height: 100%; }
+    .ts { position: absolute; left: 50px; bottom: 60px; font-size: 20px; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="thumb">
+    <div class="play"></div>
+    <div class="duration">{{ duration or '05:32' }}</div>
+  </div>
+  <div class="body">
+    <div class="title">{{ title or '5分钟搞懂定投复利' }}</div>
+    <div class="meta">{{ author or '理财官 · 小财' }} · {{ playCount or '3.2万' }}次播放</div>
+  </div>
+  <div class="qr"><img src="{{ qrDataUrl }}" alt="qr"/></div>
+  <div class="ts">扫码观看 · {{ generatedAt }}</div>
+</body>
+</html>

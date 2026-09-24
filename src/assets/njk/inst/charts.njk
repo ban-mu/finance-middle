@@ -1,0 +1,44 @@
+{# charts 海报：收益曲线/数据可视化型，750x1000 #}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 750px; height: 1000px; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: linear-gradient(180deg, #FFFFFF 0%, #F5F7FA 100%); color: #1A1A2E; position: relative; overflow: hidden; }
+    .head { padding: 60px 50px 20px; }
+    .head .t { font-size: 44px; font-weight: 800; }
+    .head .s { font-size: 24px; color: #888; margin-top: 8px; }
+    .stats { display: flex; gap: 24px; padding: 0 50px; margin-bottom: 30px; }
+    .stat { flex: 1; background: #fff; padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.06); }
+    .stat .k { font-size: 20px; color: #888; }
+    .stat .v { font-size: 36px; font-weight: 800; margin-top: 6px; color: {{ primaryColor }}; }
+    .chart { margin: 0 50px; height: 380px; background: #fff; border-radius: 14px; padding: 30px; box-shadow: 0 4px 12px rgba(0,0,0,.06); position: relative; }
+    .chart svg { width: 100%; height: 100%; }
+    .qr { position: absolute; right: 40px; bottom: 40px; width: 120px; height: 120px; background: #fff; padding: 6px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.1); }
+    .qr img { width: 100%; height: 100%; }
+    .ts { position: absolute; left: 50px; bottom: 60px; font-size: 20px; color: #999; }
+  </style>
+</head>
+<body>
+  <div class="head">
+    <div class="t">{{ title or '近30日收益走势' }}</div>
+    <div class="s">{{ subtitle or '累计收益 ' + cumulativeProfit + ' 元' }}</div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="k">累计收益</div><div class="v">+{{ cumulativeProfit or '5263.45' }}</div></div>
+    <div class="stat"><div class="k">年化收益</div><div class="v">{{ annualRate or '4.85%' }}</div></div>
+    <div class="stat"><div class="k">最大回撤</div><div class="v">{{ maxDrawdown or '-2.3%' }}</div></div>
+  </div>
+  <div class="chart">
+    <svg viewBox="0 0 600 320" preserveAspectRatio="none">
+      <polyline fill="none" stroke="{{ primaryColor }}" stroke-width="3"
+        points="0,260 50,240 100,250 150,210 200,220 250,180 300,190 350,150 400,160 450,120 500,100 550,80 600,60"/>
+      <polyline fill="rgba(255,107,107,0.1)" stroke="none"
+        points="0,260 50,240 100,250 150,210 200,220 250,180 300,190 350,150 400,160 450,120 500,100 550,80 600,60 600,320 0,320"/>
+    </svg>
+  </div>
+  <div class="qr"><img src="{{ qrDataUrl }}" alt="qr"/></div>
+  <div class="ts">扫码查看完整数据 · {{ generatedAt }}</div>
+</body>
+</html>
