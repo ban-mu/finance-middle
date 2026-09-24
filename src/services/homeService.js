@@ -1,17 +1,18 @@
 /**
- * aggregationService
- *  - 并发调用多个下游接口
- *  - 根据客户端类型做数据裁剪、字段映射、金额时间格式化、空值兜底
+ * Home 模块服务（首页聚合）
+ *
+ * 职责：并发调下游接口、按端裁剪、字段映射、格式化
+ * 随着首页业务增长（新增模块、新增端适配），在本文件内扩展即可。
+ * 如果未来某个聚合逻辑变得很复杂（如直播页聚合），可拆成独立 service：
+ *   services/liveService.js、services/fundService.js ...
  */
 const downstream = require('./downstream');
 const logger = require('../utils/logger');
 
+// 各端字段裁剪策略
 const CLIENT_FIELDS = {
-  // App 端：完整字段
   app: (data) => data,
-  // PC 端：去掉一些只给 App 用的字段（示意）
   pc: (data) => data,
-  // H5 端：精简字段
   h5: (banner) => (banner || []).map((b) => ({ id: b.id, title: b.title, imageUrl: b.imageUrl, link: b.link }))
 };
 
@@ -27,14 +28,14 @@ function fmtMoney(n) {
 async function getHomeData(ctx = {}) {
   const client = (ctx.client || 'h5').toLowerCase();
   const t0 = Date.now();
-  logger.info('aggregation start', { client });
+  logger.info('home aggregation start', { client });
 
-  // 并发调用下游
+  // 并发调用下游，单接口失败不阻塞整体（降级为空值）
   const [banner, kingkong, hot, assets] = await Promise.all([
-    downstream.getBanner().catch((e) => { logger.error('banner fail', { msg: e.message }); return []; }),
-    downstream.getKingkong().catch((e) => { logger.error('kingkong fail', { msg: e.message }); return []; }),
-    downstream.getHot(5).catch((e) => { logger.error('hot fail', { msg: e.message }); return []; }),
-    downstream.getAssets().catch((e) => { logger.error('assets fail', { msg: e.message }); return null; })
+    downstream.get('/api/banner').catch((e) => { logger.error('banner fail', { msg: e.message }); return []; }),
+    downstream.get('/api/kingkong').catch((e) => { logger.error('kingkong fail', { msg: e.message }); return []; }),
+    downstream.get('/api/hot', { params: { limit: 5 } }).catch((e) => { logger.error('hot fail', { msg: e.message }); return []; }),
+    downstream.get('/api/assets').catch((e) => { logger.error('assets fail', { msg: e.message }); return null; })
   ]);
 
   // 字段映射 + 格式化
@@ -54,7 +55,7 @@ async function getHomeData(ctx = {}) {
     assets: trimAssets || null
   };
 
-  logger.info('aggregation done', { client, ms: Date.now() - t0 });
+  logger.info('home aggregation done', { client, ms: Date.now() - t0 });
   return data;
 }
 

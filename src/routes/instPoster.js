@@ -43,7 +43,7 @@ router.get('/health', async (req, res) => {
   try {
     const browser = await browserManager.launch();
     const version = await browser.version();
-    res.json({ code: 0, msg: 'ok', data: { browser: version, queueSize: posterQueue.size, pending: posterQueue.pending } });
+    res.json({ code: 0, msg: 'ok', resultData: { browser: version, queueSize: posterQueue.size, pending: posterQueue.pending } });
   } catch (e) {
     res.status(500).json({ code: 500, msg: e.message });
   }

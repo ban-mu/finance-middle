@@ -12,6 +12,10 @@ module.exports = {
   downstream: {
     base: process.env.FINANCE_SERVER || 'http://localhost:7001'
   },
+  // JWT（WS 握手鉴权用，与 finance-server 共享同一 secret）
+  jwt: {
+    secret: process.env.JWT_SECRET || 'finance-secret'
+  },
   // puppeteer 配置
   puppeteer: {
     /**

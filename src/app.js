@@ -3,7 +3,9 @@
  *  - BFF 聚合接口：/api/home, /api/banner, /api/kingkong, /api/hot, /api/assets
  *  - 海报接口：    /api/poster/generate (POST), /api/poster/health
  *  - 用户接口：    /api/user/register|login|profile（透传 finance-server）
- *  - WebSocket：    /ws?roomId=xxx&userId=xxx&name=xxx
+ *  - 基金接口：    /api/fund/*, /api/fundSync/*（透传 finance-server）
+ *  - 聊天接口：    /api/chat/join|message|history（透传 finance-server）
+ *  - WebSocket：    /im?token=xxx（BFF 层承载长连接，消息持久化走 server API）
  *
  * 端口：7002
  */
@@ -15,11 +17,7 @@ const path = require('path');
 
 const config = require('./config');
 const logger = require('./utils/logger');
-const aggregateRouter = require('./routes/aggregate');
-const instPosterRouter = require('./routes/instPoster');
-const userProxyRouter = require('./routes/userProxy');
-const fundProxyRouter = require('./routes/fundProxy');
-const fundSyncProxyRouter = require('./routes/fundSyncProxy');
+const routes = require('./routes');
 const wsService = require('./services/wsService');
 
 const app = express();
@@ -35,14 +33,10 @@ app.use(morgan('dev'));
 app.use('/static', express.static(path.join(__dirname, 'public')));
 
 // 健康检查
-app.get('/health', (req, res) => res.json({ code: 0, msg: 'ok', data: { service: 'finance-middle', ts: Date.now() } }));
+app.get('/health', (req, res) => res.json({ code: 0, msg: 'ok', resultData: { service: 'finance-middle', ts: Date.now() } }));
 
-// ===== 业务路由 =====
-app.use('/api', aggregateRouter);
-app.use('/api/poster', instPosterRouter);
-app.use('/api/user', userProxyRouter);         // 登录/注册/个人信息透传到 finance-server
-app.use('/api/fund', fundProxyRouter);         // 基金查询透传到 finance-server
-app.use('/api/fundSync', fundSyncProxyRouter); // 基金同步透传到 finance-server
+// ===== 业务路由（统一入口） =====
+app.use('/api', routes);
 
 // ===== 全局异常捕获 =====
 app.use((err, req, res, next) => {
@@ -69,5 +63,5 @@ process.on('SIGINT', async () => {
 
 server.listen(config.port, () => {
   logger.info(`finance-middle listening on http://localhost:${config.port}`);
-  logger.info(`websocket endpoint: ws://localhost:${config.port}/ws`);
+  logger.info(`websocket endpoint: ws://localhost:${config.port}/im`);
 });
